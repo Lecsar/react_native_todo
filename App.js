@@ -8,7 +8,6 @@ export default class App extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-      {/* <Text>12</Text> */}
         <TodoList />
       </View>
     );

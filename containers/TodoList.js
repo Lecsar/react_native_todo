@@ -2,6 +2,9 @@ import React from 'react';
 import {StyleSheet, Text, View, Dimensions} from 'react-native';
 import {AddInput} from '../components/AddInput';
 import {Task} from '../components/Task';
+import {TaskList} from '../components/TaskList';
+
+let lastId = 2;
 
 export class TodoList extends React.Component {
     state = {
@@ -27,7 +30,7 @@ export class TodoList extends React.Component {
         }));
     };
 
-    deleteTask = deletedTaskId => {
+    deleteTask = deletedTaskId => () => {
         this.setState(({tasks}) => ({
             tasks: tasks.filter(({id}) => id !== deletedTaskId),
         }));
@@ -50,9 +53,19 @@ export class TodoList extends React.Component {
 
     render() {
         return (
-            <View>
-                <AddInput addTask={this.addTask} />
+            <View style={styles.todo}>
+                <AddInput style={styles.addInput} addTask={this.addTask} />
+                <TaskList tasks={this.state.tasks} deleteTask={this.deleteTask} />
             </View>
         );
     }
 }
+
+const styles = StyleSheet.create({
+    todo: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        width: '100%',
+    },
+});

@@ -43,15 +43,15 @@ const styles = StyleSheet.create({
     group: {
         display: 'flex',
         flexDirection: 'row',
-        // justifyContent: 'space-between',
         alignItems: 'center',
         position: 'relative',
         width: '100%',
-        backgro
+        marginBottom: 20,
     },
 
     input: {
         width: '85%',
+        marginRight: 15,
         height: 50,
         borderColor: 'black',
         borderWidth: 1,
