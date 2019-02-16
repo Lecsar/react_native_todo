@@ -1,33 +1,41 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, TextInput } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { Task } from './Task';
+import { AddInput } from './AddInput';
 
 export class TaskList extends Component {
   state = {
-    editingTaskId: null
+    editingTaskId: null,
   };
 
   selectEditingTask = (editingTaskId = null) => () => {
     this.setState({ editingTaskId });
   };
 
+  changeTask = id => changedText => {
+    this.props.changeTask(id, 'text', changedText);
+    this.selectEditingTask()();
+  };
+
   render() {
     const { editingTaskId } = this.state;
-    const { tasks, deleteTask } = this.props;
+    const { tasks, deleteTask, changeTask } = this.props;
 
     return (
       <View style={styles.list}>
         {tasks.map(({ id, ...data }) =>
           editingTaskId === id ? (
-            <TextInput value={data.text} />
-          ) : (
-            <Task
+            <AddInput
               key={id}
-              {...data}
-              onClickDelete={deleteTask(id)}
-              onClickEdit={this.selectEditingTask(id)}
+              text={data.text}
+              onAccept={this.changeTask(id)}
+              onEndEditingInputWithText={this.changeTask(id)}
+              onEndEditingEmptyInput={deleteTask(id)}
+              onClose={this.selectEditingTask()}
             />
-          )
+          ) : (
+            <Task key={id} {...data} onClickDelete={deleteTask(id)} onClickEdit={this.selectEditingTask(id)} />
+          ),
         )}
       </View>
     );
@@ -40,6 +48,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     width: '100%',
-    backgroundColor: 'red'
-  }
+    marginTop: 10,
+  },
 });

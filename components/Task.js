@@ -6,10 +6,8 @@ export const Task = ({ text, onClickDelete, onClickEdit, onClickChange }) => {
   return (
     <View style={styles.task}>
       <Text style={styles.text}>{text}</Text>
-      <View style={styles.btnGroup}>
-        <CustomButton type={btnTypes.edit} onPress={onClickEdit} />
-        <CustomButton type={btnTypes.delete} onPress={onClickDelete} />
-      </View>
+      <CustomButton type={btnTypes.edit} onPress={onClickEdit} />
+      <CustomButton type={btnTypes.delete} onPress={onClickDelete} />
     </View>
   );
 };
@@ -18,17 +16,10 @@ const styles = StyleSheet.create({
   task: {
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
   },
 
   text: {
-    width: '80%'
+    width: '80%',
   },
-
-  btnGroup: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: 60
-  }
 });

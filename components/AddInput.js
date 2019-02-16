@@ -8,24 +8,30 @@ export class AddInput extends React.Component {
     super(props);
 
     this.state = {
-      text: props.text || ''
+      text: props.text || '',
     };
   }
 
-  changeValue = ({ nativeEvent: { text } }) => this.setState({ text });
+  clearInput() {
+    this.setState({ text: '' });
+  }
+
+  changeValue = ({ nativeEvent: { text } }) => {
+    this.setState({ text });
+  };
 
   onAcceptInput = () => {
-    this.props.onAccept();
+    this.props.onAccept(this.state.text);
     this.onEndEditing();
   };
 
   onCloseInput = () => {
     this.props.onClose();
-    this.setState({ text: '' });
+    this.clearInput();
   };
 
   onEndEditing = () => {
-    const {onEndEditingInputWithText, onEndEditingEmptyInput} = this.props;
+    const { onEndEditingInputWithText, onEndEditingEmptyInput } = this.props;
     const valueWithoutSpaces = this.state.text.trim();
 
     if (valueWithoutSpaces) {
@@ -33,6 +39,8 @@ export class AddInput extends React.Component {
     } else {
       onEndEditingEmptyInput();
     }
+
+    this.clearInput();
   };
 
   render() {
@@ -48,12 +56,10 @@ export class AddInput extends React.Component {
           onEndEditing={this.onEndEditing}
           autoFocus
         />
-        {!hideAcceptBtn && (
-          <CustomButton type={btnTypes.accept} onPress={this.onAcceptInput} />
-        )}
-        {!hideCloseBtn && (
-          <CustomButton type={btnTypes.delete} onPress={this.onCloseInput} />
-        )}
+        <View style={styles.btnGroup}>
+          {!hideAcceptBtn && <CustomButton type={btnTypes.accept} onPress={this.onAcceptInput} />}
+          {!hideCloseBtn && <CustomButton type={btnTypes.delete} onPress={this.onCloseInput} />}
+        </View>
       </View>
     );
   }
@@ -65,7 +71,7 @@ AddInput.defaultProps = {
   onEndEditingInputWithText: noop,
   onEndEditingEmptyInput: noop,
   onClose: noop,
-  onAccept: noop
+  onAccept: noop,
 };
 
 const styles = StyleSheet.create({
@@ -75,11 +81,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     position: 'relative',
     width: '100%',
-    marginBottom: 20
   },
 
   input: {
-    width: '85%',
+    width: '100%',
     marginRight: 15,
     height: 50,
     borderColor: 'black',
@@ -87,6 +92,14 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingLeft: 10,
     paddingRight: 10,
-    fontSize: 14
-  }
+    fontSize: 14,
+  },
+
+  btnGroup: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    position: 'absolute',
+    right: 0,
+  },
 });
